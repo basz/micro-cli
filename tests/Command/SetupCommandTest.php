@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the prooph/micro-cli.
  * (c) 2017-2018 prooph software GmbH <contact@prooph.de>
@@ -60,8 +61,8 @@ final class SetupCommandTest extends TestCase
         $commandTester->execute([]);
 
         $this->assertSame(0, $commandTester->getStatusCode());
-        $this->assertTrue(file_exists($this->getTempDirectory() . '/gateway/www.conf'));
-        $this->assertTrue(file_exists($this->getTempDirectory() . '/docker-compose.yml'));
+        $this->assertTrue(\file_exists($this->getTempDirectory() . '/gateway/www.conf'));
+        $this->assertTrue(\file_exists($this->getTempDirectory() . '/docker-compose.yml'));
     }
 
     /**
@@ -115,7 +116,7 @@ final class SetupCommandTest extends TestCase
      */
     public function it_exits_if_docker_compose_file_already_exists(): void
     {
-        touch($this->getTempDirectory() . '/docker-compose.yml');
+        \touch($this->getTempDirectory() . '/docker-compose.yml');
 
         $commandTester = new CommandTester($this->command);
         $commandTester->execute([]);
@@ -126,13 +127,13 @@ final class SetupCommandTest extends TestCase
 
     private function getTempDirectory(): string
     {
-        return sys_get_temp_dir() . '/prooph_test';
+        return \sys_get_temp_dir() . '/prooph_test';
     }
 
     private function prepareTempDirectory(): void
     {
-        if (! is_dir($this->getTempDirectory() . '/gateway')) {
-            mkdir($this->getTempDirectory() . '/gateway', 0777, true);
+        if (! \is_dir($this->getTempDirectory() . '/gateway')) {
+            \mkdir($this->getTempDirectory() . '/gateway', 0777, true);
         }
     }
 
@@ -144,9 +145,9 @@ final class SetupCommandTest extends TestCase
         );
 
         foreach ($files as $fileInfo) {
-            $fileInfo->isDir() ? rmdir($fileInfo->getRealPath()) : unlink($fileInfo->getRealPath());
+            $fileInfo->isDir() ? \rmdir($fileInfo->getRealPath()) : \unlink($fileInfo->getRealPath());
         }
 
-        rmdir($this->getTempDirectory());
+        \rmdir($this->getTempDirectory());
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the prooph/micro-cli.
  * (c) 2017-2018 prooph software GmbH <contact@prooph.de>
@@ -52,11 +53,11 @@ class SetupCommand extends AbstractCommand
 
         $path = $input->getArgument('path');
 
-        if (! is_dir(dirname($path))) {
-            throw new \RuntimeException('Directory ' . dirname($path) . ' not found.');
+        if (! \is_dir(\dirname($path))) {
+            throw new \RuntimeException('Directory ' . \dirname($path) . ' not found.');
         }
 
-        if (file_exists($path . '/docker-compose.yml')) {
+        if (\file_exists($path . '/docker-compose.yml')) {
             $io->warning('docker-compose.yml exists already. Aborted.');
 
             $this->release();
@@ -77,7 +78,7 @@ class SetupCommand extends AbstractCommand
                     return '';
                 }
 
-                if (! is_int((int) $answer) || 0 === (int) $answer) {
+                if (! \is_int((int) $answer) || 0 === (int) $answer) {
                     throw new \RuntimeException('Invalid HTTP port');
                 }
 
@@ -95,7 +96,7 @@ class SetupCommand extends AbstractCommand
                     return '';
                 }
 
-                if (! is_int((int) $answer) || 0 === (int) $answer) {
+                if (! \is_int((int) $answer) || 0 === (int) $answer) {
                     throw new \RuntimeException('Invalid HTTPS port');
                 }
 
@@ -119,11 +120,11 @@ class SetupCommand extends AbstractCommand
             return 1;
         }
 
-        if (! is_dir($path)) {
-            mkdir($path);
+        if (! \is_dir($path)) {
+            \mkdir($path);
         }
 
-        file_put_contents(
+        \file_put_contents(
             $path . '/docker-compose.yml',
             $this->generateConfigFile(
                 $httpPort,
@@ -131,12 +132,12 @@ class SetupCommand extends AbstractCommand
             )
         );
 
-        if (! is_dir($path . '/gateway')) {
-            mkdir($path . '/gateway');
+        if (! \is_dir($path . '/gateway')) {
+            \mkdir($path . '/gateway');
         }
 
-        if (! is_dir($path . '/service')) {
-            mkdir($path . '/service');
+        if (! \is_dir($path . '/service')) {
+            \mkdir($path . '/service');
         }
 
         $this->generateNginxConfig()->dumpFile($path . '/gateway/www.conf');

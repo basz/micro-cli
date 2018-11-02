@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the prooph/micro-cli.
  * (c) 2017-2018 prooph software GmbH <contact@prooph.de>
@@ -62,22 +63,22 @@ final class CreatePhpServiceCommandTest extends TestCase
         $this->assertSame(0, $commandTester->getStatusCode());
         $this->assertContains(
             'command: run_this_command',
-            file_get_contents($this->getTempDirectory() . '/docker-compose.yml')
+            \file_get_contents($this->getTempDirectory() . '/docker-compose.yml')
         );
     }
 
     private function getTempDirectory(): string
     {
-        return sys_get_temp_dir() . '/prooph_test';
+        return \sys_get_temp_dir() . '/prooph_test';
     }
 
     private function prepareTempDirectory(): void
     {
-        if (! is_dir($this->getTempDirectory() . '/gateway')) {
-            mkdir($this->getTempDirectory() . '/gateway', 0777, true);
+        if (! \is_dir($this->getTempDirectory() . '/gateway')) {
+            \mkdir($this->getTempDirectory() . '/gateway', 0777, true);
         }
 
-        file_put_contents($this->getTempDirectory() . '/docker-compose.yml', "version: '2'\nservices: []");
+        \file_put_contents($this->getTempDirectory() . '/docker-compose.yml', "version: '2'\nservices: []");
     }
 
     private function removeTempDirectory(): void
@@ -88,9 +89,9 @@ final class CreatePhpServiceCommandTest extends TestCase
         );
 
         foreach ($files as $fileInfo) {
-            $fileInfo->isDir() ? rmdir($fileInfo->getRealPath()) : unlink($fileInfo->getRealPath());
+            $fileInfo->isDir() ? \rmdir($fileInfo->getRealPath()) : \unlink($fileInfo->getRealPath());
         }
 
-        rmdir($this->getTempDirectory());
+        \rmdir($this->getTempDirectory());
     }
 }

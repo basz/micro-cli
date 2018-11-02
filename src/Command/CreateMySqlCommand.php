@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the prooph/micro-cli.
  * (c) 2017-2018 prooph software GmbH <contact@prooph.de>
@@ -41,7 +42,7 @@ class CreateMySqlCommand extends AbstractCommand
             return 1;
         }
 
-        if (! file_exists($this->getRootDir() . '/docker-compose.yml')) {
+        if (! \file_exists($this->getRootDir() . '/docker-compose.yml')) {
             $io->warning('docker-compose.yml does not exist. Run ./bin/micro micro:setup. Aborted.');
 
             $this->release();
@@ -51,7 +52,7 @@ class CreateMySqlCommand extends AbstractCommand
 
         $question = new Question('Name of the service (f.e. mysql): ');
         $question->setValidator(function ($answer) {
-            if (! is_string($answer) || ! preg_match('/^[a-z-0-9]+$/', $answer)) {
+            if (! \is_string($answer) || ! \preg_match('/^[a-z-0-9]+$/', $answer)) {
                 throw new \RuntimeException('Invalid service name');
             }
 
@@ -74,7 +75,7 @@ class CreateMySqlCommand extends AbstractCommand
 
         $question = new Question('Database name: ', false);
         $question->setValidator(function ($answer) {
-            if (! is_string($answer) || strlen($answer) === 0) {
+            if (! \is_string($answer) || \strlen($answer) === 0) {
                 throw new \RuntimeException('Database name cannot be empty');
             }
 
@@ -91,7 +92,7 @@ class CreateMySqlCommand extends AbstractCommand
                 return '';
             }
 
-            if (! is_int((int) $answer) || 0 === (int) $answer) {
+            if (! \is_int((int) $answer) || 0 === (int) $answer) {
                 throw new \RuntimeException('Invalid MySQL port');
             }
 
@@ -104,7 +105,7 @@ class CreateMySqlCommand extends AbstractCommand
 
         $question = new Question('MySQL root password: ', '');
         $question->setValidator(function ($answer) {
-            if (! is_string($answer)) {
+            if (! \is_string($answer)) {
                 throw new \RuntimeException('Invalid password');
             }
 
@@ -120,7 +121,7 @@ class CreateMySqlCommand extends AbstractCommand
         if ($answer) {
             $question = new Question('MySQL user: ', '');
             $question->setValidator(function ($answer) {
-                if (! is_string($answer) || strlen($answer) === 0) {
+                if (! \is_string($answer) || \strlen($answer) === 0) {
                     throw new \RuntimeException('Invalid user');
                 }
 
@@ -133,7 +134,7 @@ class CreateMySqlCommand extends AbstractCommand
 
             $question = new Question('MySQL password: ', '');
             $question->setValidator(function ($answer) {
-                if (! is_string($answer) || strlen($answer) === 0) {
+                if (! \is_string($answer) || \strlen($answer) === 0) {
                     throw new \RuntimeException('Invalid password');
                 }
 

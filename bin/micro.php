@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the prooph/micro-cli.
  * (c) 2017-2018 prooph software GmbH <contact@prooph.de>
@@ -14,12 +15,12 @@ namespace Prooph\MicroCli;
 
 use Symfony\Component\Console\Application;
 
-if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
+if (\file_exists(__DIR__ . '/../vendor/autoload.php')) {
     include_once __DIR__ . '/../vendor/autoload.php';
-    chdir(__DIR__ . '/../');
-} elseif (file_exists(__DIR__ . '/../../../autoload.php')) {
+    \chdir(__DIR__ . '/../');
+} elseif (\file_exists(__DIR__ . '/../../../autoload.php')) {
     include_once __DIR__ . '/../../../autoload.php';
-    chdir(__DIR__ . '/../../../../');
+    \chdir(__DIR__ . '/../../../../');
 } else {
     throw new \RuntimeException('Error: vendor/autoload.php could not be found. Did you run php composer.phar install?');
 }

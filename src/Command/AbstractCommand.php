@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the prooph/micro-cli.
  * (c) 2017-2018 prooph software GmbH <contact@prooph.de>
@@ -19,7 +20,7 @@ abstract class AbstractCommand extends Command
 {
     protected function getRootDir(): string
     {
-        return getcwd();
+        return \getcwd();
     }
 
     protected function getServiceDirPath($serviceName): string
@@ -30,7 +31,7 @@ abstract class AbstractCommand extends Command
     protected function getDockerComposeConfig(): array
     {
         $configFileName = $this->getRootDir() . '/docker-compose.yml';
-        $configFile = file_get_contents($configFileName);
+        $configFile = \file_get_contents($configFileName);
 
         return Yaml::parse($configFile);
     }
@@ -38,14 +39,14 @@ abstract class AbstractCommand extends Command
     protected function updateConfig(string $serviceName, array $config): void
     {
         $configFileName = $this->getRootDir() . '/docker-compose.yml';
-        $configFile = file_get_contents($configFileName);
+        $configFile = \file_get_contents($configFileName);
 
         $oldConfig = Yaml::parse($configFile);
 
-        if (array_key_exists($serviceName, $oldConfig['services'])) {
+        if (\array_key_exists($serviceName, $oldConfig['services'])) {
             throw new \RuntimeException('The requested service name "' . $serviceName . '" exists already.');
         }
 
-        file_put_contents($configFileName, Yaml::dump(array_merge_recursive($oldConfig, $config), 10, 2));
+        \file_put_contents($configFileName, Yaml::dump(\array_merge_recursive($oldConfig, $config), 10, 2));
     }
 }

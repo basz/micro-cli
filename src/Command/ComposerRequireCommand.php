@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the prooph/micro-cli.
  * (c) 2017-2018 prooph software GmbH <contact@prooph.de>
@@ -119,11 +120,11 @@ class ComposerRequireCommand extends AbstractCommand
                 continue;
             }
 
-            if (! preg_match('/^prooph\/php:([0-9\.]+)/', $serviceConfig['image'], $phpVersionMatches)) {
+            if (! \preg_match('/^prooph\/php:([0-9\.]+)/', $serviceConfig['image'], $phpVersionMatches)) {
                 continue;
             }
 
-            if (! file_exists($this->getServiceDirPath($service) . '/composer.json')) {
+            if (! \file_exists($this->getServiceDirPath($service) . '/composer.json')) {
                 continue;
             }
 
@@ -143,16 +144,16 @@ class ComposerRequireCommand extends AbstractCommand
 
         $requestedService = $input->getArgument('service');
 
-        if ($requestedService && ! array_key_exists($requestedService, $declaredPhpServices)) {
+        if ($requestedService && ! \array_key_exists($requestedService, $declaredPhpServices)) {
             $io->warning("Service with name '$requestedService' is not configured in docker-compose.yml yet.");
             $requestedService = null;
         }
 
         if (! $requestedService) {
-            $requestedService = $io->choice('Select a service', array_keys($declaredPhpServices));
+            $requestedService = $io->choice('Select a service', \array_keys($declaredPhpServices));
         }
 
-        if (! array_key_exists($requestedService, $declaredPhpServices)) {
+        if (! \array_key_exists($requestedService, $declaredPhpServices)) {
             throw new \RuntimeException('Invalid service name provided.');
         }
 

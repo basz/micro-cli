@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the prooph/micro-cli.
  * (c) 2017-2018 prooph software GmbH <contact@prooph.de>
@@ -69,7 +70,7 @@ abstract class ComposerCommandTestCase extends TestCase
      */
     public function it_aborts_if_no_php_service_is_declared(): void
     {
-        file_put_contents($this->getTempDirectory() . '/docker-compose.yml', 'services: []');
+        \file_put_contents($this->getTempDirectory() . '/docker-compose.yml', 'services: []');
 
         $commandTester = new CommandTester($this->command);
         $commandTester->execute([]);
@@ -90,7 +91,7 @@ abstract class ComposerCommandTestCase extends TestCase
         $this->prepareServiceComposerFile('php_service1');
         $this->prepareServiceComposerFile('php_service2');
 
-        file_put_contents($this->getTempDirectory() . '/docker-compose.yml', <<<EOL
+        \file_put_contents($this->getTempDirectory() . '/docker-compose.yml', <<<EOL
 services:
     php_service1:
         image: prooph/php:7.1
@@ -129,7 +130,7 @@ EOL
         $this->prepareServiceComposerFile('php_service1');
         $this->prepareServiceComposerFile('php_service2');
 
-        file_put_contents($this->getTempDirectory() . '/docker-compose.yml', <<<EOL
+        \file_put_contents($this->getTempDirectory() . '/docker-compose.yml', <<<EOL
 services:
     php_service1:
         image: prooph/php:7.1
@@ -161,7 +162,7 @@ EOL
     {
         $this->prepareServiceComposerFile('php_service1');
 
-        file_put_contents($this->getTempDirectory() . '/docker-compose.yml', <<<EOL
+        \file_put_contents($this->getTempDirectory() . '/docker-compose.yml', <<<EOL
 services:
     php_service1:
         image: prooph/php:7.1
@@ -193,7 +194,7 @@ EOL
         $this->prepareServiceComposerFile('php_service1');
         $this->prepareServiceComposerFile('php_service2');
 
-        file_put_contents($this->getTempDirectory() . '/docker-compose.yml', <<<EOL
+        \file_put_contents($this->getTempDirectory() . '/docker-compose.yml', <<<EOL
 services:
     php_service1:
         image: prooph/php:7.1
@@ -220,7 +221,7 @@ EOL
 
     private function getTempDirectory(): string
     {
-        return sys_get_temp_dir() . '/prooph_test';
+        return \sys_get_temp_dir() . '/prooph_test';
     }
 
     private function getServiceDirectory(): string
@@ -236,29 +237,29 @@ EOL
         );
 
         foreach ($files as $fileInfo) {
-            $fileInfo->isDir() ? rmdir($fileInfo->getRealPath()) : unlink($fileInfo->getRealPath());
+            $fileInfo->isDir() ? \rmdir($fileInfo->getRealPath()) : \unlink($fileInfo->getRealPath());
         }
 
-        rmdir($this->getTempDirectory());
+        \rmdir($this->getTempDirectory());
     }
 
     private function prepareTempDirectories(): void
     {
-        if (! is_dir($this->getTempDirectory())) {
-            mkdir($this->getTempDirectory(), 0777, true);
+        if (! \is_dir($this->getTempDirectory())) {
+            \mkdir($this->getTempDirectory(), 0777, true);
         }
 
-        if (! is_dir($this->getServiceDirectory())) {
-            mkdir($this->getServiceDirectory(), 0777, true);
+        if (! \is_dir($this->getServiceDirectory())) {
+            \mkdir($this->getServiceDirectory(), 0777, true);
         }
     }
 
     private function prepareServiceComposerFile(string $serviceName): void
     {
-        if (! is_dir($this->getServiceDirectory() . '/' . $serviceName)) {
-            mkdir($this->getServiceDirectory() . '/' . $serviceName, 0777, true);
+        if (! \is_dir($this->getServiceDirectory() . '/' . $serviceName)) {
+            \mkdir($this->getServiceDirectory() . '/' . $serviceName, 0777, true);
         }
 
-        file_put_contents($this->getServiceDirectory() . '/' . $serviceName . '/composer.json', '{}');
+        \file_put_contents($this->getServiceDirectory() . '/' . $serviceName . '/composer.json', '{}');
     }
 }

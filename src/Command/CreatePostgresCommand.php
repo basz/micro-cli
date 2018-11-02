@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the prooph/micro-cli.
  * (c) 2017-2018 prooph software GmbH <contact@prooph.de>
@@ -41,7 +42,7 @@ class CreatePostgresCommand extends AbstractCommand
             return 1;
         }
 
-        if (! file_exists($this->getRootDir() . '/docker-compose.yml')) {
+        if (! \file_exists($this->getRootDir() . '/docker-compose.yml')) {
             $io->warning('docker-compose.yml does not exist. Run ./bin/micro micro:setup. Aborted.');
 
             $this->release();
@@ -51,7 +52,7 @@ class CreatePostgresCommand extends AbstractCommand
 
         $question = new Question('Name of the service (f.e. postgres): ');
         $question->setValidator(function ($answer) {
-            if (! is_string($answer) || ! preg_match('/^[a-z-0-9]+$/', $answer)) {
+            if (! \is_string($answer) || ! \preg_match('/^[a-z-0-9]+$/', $answer)) {
                 throw new \RuntimeException('Invalid service name');
             }
 
@@ -81,7 +82,7 @@ class CreatePostgresCommand extends AbstractCommand
 
         $question = new Question('Database name: ', false);
         $question->setValidator(function ($answer) {
-            if (! is_string($answer) || strlen($answer) === 0) {
+            if (! \is_string($answer) || \strlen($answer) === 0) {
                 throw new \RuntimeException('Database name cannot be empty');
             }
 
@@ -98,7 +99,7 @@ class CreatePostgresCommand extends AbstractCommand
                 return '';
             }
 
-            if (! is_int((int) $answer) || 0 === (int) $answer) {
+            if (! \is_int((int) $answer) || 0 === (int) $answer) {
                 throw new \RuntimeException('Invalid PostgreSQL port');
             }
 
@@ -116,7 +117,7 @@ class CreatePostgresCommand extends AbstractCommand
 
         $question = new Question('PostgreSQL password: ', '');
         $question->setValidator(function ($answer) {
-            if (! is_string($answer)) {
+            if (! \is_string($answer)) {
                 throw new \RuntimeException('Invalid password');
             }
 
@@ -129,7 +130,7 @@ class CreatePostgresCommand extends AbstractCommand
 
         $question = new Question('Mount docker-entrypoint-initdb.d: ', '');
         $question->setValidator(function ($answer) {
-            if (! is_string($answer)) {
+            if (! \is_string($answer)) {
                 throw new \RuntimeException('Invalid docker-entrypoint-initdb.d');
             }
 

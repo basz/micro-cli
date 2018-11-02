@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the prooph/micro-cli.
  * (c) 2017-2018 prooph software GmbH <contact@prooph.de>
@@ -50,7 +51,7 @@ class CreatePhpServiceCommand extends AbstractCommand
             return 1;
         }
 
-        if (! file_exists($this->getRootDir() . '/docker-compose.yml')) {
+        if (! \file_exists($this->getRootDir() . '/docker-compose.yml')) {
             $io->warning('docker-compose.yml does not exist. Run ./bin/micro micro:setup. Aborted.');
 
             $this->release();
@@ -58,11 +59,11 @@ class CreatePhpServiceCommand extends AbstractCommand
             return 1;
         }
 
-        $currentConfig = Yaml::parse(file_get_contents($this->getRootDir() . '/docker-compose.yml'));
+        $currentConfig = Yaml::parse(\file_get_contents($this->getRootDir() . '/docker-compose.yml'));
 
         $question = new Question('Name of the service: ');
         $question->setValidator(function ($answer) {
-            if (! is_string($answer) || ! preg_match('/^[a-z-0-9]+$/', $answer)) {
+            if (! \is_string($answer) || ! \preg_match('/^[a-z-0-9]+$/', $answer)) {
                 throw new \RuntimeException('Invalid service name');
             }
 
@@ -72,7 +73,7 @@ class CreatePhpServiceCommand extends AbstractCommand
 
         $serviceName = $io->askQuestion($question);
 
-        if (is_dir($this->getRootDir() . '/service/' . $serviceName)) {
+        if (\is_dir($this->getRootDir() . '/service/' . $serviceName)) {
             throw new \RuntimeException('Service directory exists already');
         }
 
@@ -90,7 +91,7 @@ class CreatePhpServiceCommand extends AbstractCommand
 
         $question = new Question('Give the directory in which to mount the service (defaults to: "/var/www")', '/var/www');
         $question->setValidator(function ($answer) {
-            if (! is_string($answer) || strlen($answer) === 0) {
+            if (! \is_string($answer) || \strlen($answer) === 0) {
                 throw new \RuntimeException('Invalid service name');
             }
 
@@ -100,7 +101,7 @@ class CreatePhpServiceCommand extends AbstractCommand
 
         $volume = $io->askQuestion($question);
 
-        $services = array_merge(['[NONE]'], array_keys($currentConfig['services']));
+        $services = \array_merge(['[NONE]'], \array_keys($currentConfig['services']));
         $question = new ChoiceQuestion('On which services is the new service dependend? (comma separated)', $services);
         $question->setMultiselect(true);
 
@@ -112,14 +113,14 @@ class CreatePhpServiceCommand extends AbstractCommand
 
         $useNginxConfig = false;
 
-        if ('-fpm' === substr($image, -4, 4)) {
+        if ('-fpm' === \substr($image, -4, 4)) {
             $useNginxConfig = true;
 
             $io->section('Nginx configuration');
             upstream:
             $question = new Question('Add upstream (f.e. "php-user-GET"): ');
             $question->setValidator(function ($answer) {
-                if (! is_string($answer) || strlen($answer) === 0) {
+                if (! \is_string($answer) || \strlen($answer) === 0) {
                     throw new \RuntimeException('Invalid upstream');
                 }
 
@@ -136,7 +137,7 @@ class CreatePhpServiceCommand extends AbstractCommand
             nginxlocation:
             $question = new Question('Add location (f.e. "= /api/v1/user-$request_method"): ');
             $question->setValidator(function ($answer) {
-                if (! is_string($answer) || 0 === strlen($answer)) {
+                if (! \is_string($answer) || 0 === \strlen($answer)) {
                     throw new \RuntimeException('Invalid location');
                 }
 
@@ -168,7 +169,7 @@ class CreatePhpServiceCommand extends AbstractCommand
         } else {
             $question = new Question('Enter the start command (f.e. "php run.php"): ', '');
             $question->setValidator(function ($answer) {
-                if (! is_string($answer) || strlen($answer) === 0) {
+                if (! \is_string($answer) || \strlen($answer) === 0) {
                     throw new \RuntimeException('Invalid command');
                 }
 
@@ -203,7 +204,7 @@ class CreatePhpServiceCommand extends AbstractCommand
                 return $node instanceof Server;
             });
 
-            $count = count($servers);
+            $count = \count($servers);
 
             if ($count === 0) {
                 throw new \RuntimeException('No server section found in gateway config.');
@@ -222,12 +223,12 @@ class CreatePhpServiceCommand extends AbstractCommand
                 ]));
             }
 
-            while ($location = array_shift($locations)) {
-                $fastcgiPass = array_shift($fastcgiPasses);
-                $fastcgiIndex = array_shift($fastcgiIndexes);
-                $scriptFileName = array_shift($scriptFileNames);
-                $pathInfo = array_shift($pathInfos);
-                $scriptName = array_shift($scriptNames);
+            while ($location = \array_shift($locations)) {
+                $fastcgiPass = \array_shift($fastcgiPasses);
+                $fastcgiIndex = \array_shift($fastcgiIndexes);
+                $scriptFileName = \array_shift($scriptFileNames);
+                $pathInfo = \array_shift($pathInfos);
+                $scriptName = \array_shift($scriptNames);
 
                 $server->append(new Location(new Param($location), null, [
                     new Directive('fastcgi_split_path_info', [new Param('^(.+\.php)(/.+)$')]),
@@ -268,11 +269,11 @@ class CreatePhpServiceCommand extends AbstractCommand
 
         $this->updateConfig($serviceName, $config);
 
-        if (! is_dir($this->getRootDir() . '/service')) {
-            mkdir($this->getRootDir() . '/service');
+        if (! \is_dir($this->getRootDir() . '/service')) {
+            \mkdir($this->getRootDir() . '/service');
         }
 
-        mkdir($this->getRootDir() . '/service/' . $serviceName);
+        \mkdir($this->getRootDir() . '/service/' . $serviceName);
 
         $io->success('Successfully updated microservice settings');
 
