@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file is part of the prooph/micro-cli.
+ * This file is part of prooph/micro-cli.
  * (c) 2017-2018 prooph software GmbH <contact@prooph.de>
  * (c) 2017-2018 Sascha-Oliver Prolic <saschaprolic@googlemail.com>
  *
